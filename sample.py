@@ -1,8 +1,10 @@
 import sys
 import json
 from pyspark import SparkContext
+from time import time
 
 def task(argv):
+    start = time()
     infile, outfile = argv[1], argv[2]
 
     sc = SparkContext('local[*]','task1')
@@ -18,7 +20,10 @@ def task(argv):
 
     with open(outfile,'w') as outf:
         for output in ouputRDD.collect():
-            outf.write(json.dumps(output)+"'\n")
+            outf.write(json.dumps(output)+"\n")
+            
+    end = time()
+    print("total run time in seconds:",end-start)
 
 if __name__ == '__main__':
     task(sys.argv)
